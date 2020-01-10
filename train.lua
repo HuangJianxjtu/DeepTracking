@@ -25,10 +25,13 @@ require('lfs')
 require('nngraph')
 require('optim')
 require('image')
+
+-- local files
 require('SensorData')
 require('WeightedBCECriterion')
 require('Recurrent')
 
+-- 第一个参数是参数名称, 第二个参数是default value， 第三个参数是description
 cmd:option('-gpu', 0, 'use GPU')
 cmd:option('-iter', 100000, 'the number of training iterations')
 cmd:option('-N', 100, 'training sequence length')
@@ -39,6 +42,7 @@ cmd:option('-initweights', '', 'initial weights')
 
 params = cmd:parse(arg)
 
+-- creat log file
 cmd:log('log_' .. params.model .. '.txt', params)
 
 -- switch to GPU
@@ -47,7 +51,7 @@ if params.gpu > 0 then
 	require('cunn')
 	require('cutorch')
 	cutorch.setDevice(params.gpu)
-	DEFAULT_TENSOR_TYPE = 'torch.CudaTensor'
+	DEFAULT_TENSOR_TYPE = 'torch.CudaTensor'   
 else
 	print('Using CPU')
 	DEFAULT_TENSOR_TYPE = 'torch.FloatTensor'
@@ -57,7 +61,7 @@ torch.setdefaulttensortype(DEFAULT_TENSOR_TYPE)
 
 -- load training data
 print('Loading training data from file ' .. params.data)
---data = torch.load(params.data) -- load pre-processed 2D grid sensor input
+-- data = torch.load(params.data) -- load pre-processed 2D grid sensor input
 data = LoadSensorData(params.data, params)
 width  = (#data)[4] -- occupancy 2D grid width
 height = (#data)[3] -- occupancy 2D grid height

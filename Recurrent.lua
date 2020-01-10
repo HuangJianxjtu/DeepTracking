@@ -36,13 +36,15 @@ end
 --]]
 
 -- A memory-efficient (but slower) version of the recurrent module; requires O(N * M(h0)) memory.
+-- creat a class named Recurrent, which inherit from nn.Module
+-- their respective local names are Recurrent, parent(这是为了命名的方便)
 local Recurrent, parent = torch.class('Recurrent', 'nn.Module')
 
 function Recurrent:__init(step, N)
-   parent.__init(self)
+   parent.__init(self)  -- the initializer
    self.N = N
    self.step = step
-   self.hidden    = {}
+   self.hidden    = {}   -- table
    self.output    = {}
    self.gradInput = {}
    for i=1,N do

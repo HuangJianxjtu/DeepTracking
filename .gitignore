@@ -1,0 +1,6 @@
+*.zip
+*.t7
+log_model.txt
+
+video_model
+weights_model
